@@ -11,7 +11,7 @@ export default function PostDetailPage({
   return (
     <div className='container' style={{ maxWidth: '800px', marginTop: '30px' }}>
       <Link
-        href='#'
+        href='/'
         style={{
           display: 'inline-block',
           marginBottom: '20px',
