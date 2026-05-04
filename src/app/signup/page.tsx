@@ -1,13 +1,26 @@
+'use client';
+import { signup } from '@/actions/auth';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function SignupPage() {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (formData: FormData) => {
+    setError(null);
+    const result = await signup(formData);
+    if (result && result.error) {
+      setError(result.error);
+    }
+  };
+
   return (
     <div className='container' style={{ maxWidth: '400px', marginTop: '50px' }}>
       <div className='card'>
         <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>
           アカウント登録
         </h2>
-        <form>
+        <form action={handleSubmit}>
           <div className='form-group'>
             <label className='form-label' htmlFor='username'>
               ユーザー名
@@ -47,7 +60,7 @@ export default function SignupPage() {
               required
             />
           </div>
-          {/* {error && <p className='error-message'>{error}</p>} */}
+          { error && <p className='error-message'>{error}</p>}
           <button
             type='submit'
             className='btn'
@@ -58,7 +71,7 @@ export default function SignupPage() {
         </form>
         <p style={{ textAlign: 'center', fontSize: '14px' }}>
           すでにアカウントをお持ちですか？ <br />
-          <Link href='#' style={{ color: '#0070f3' }}>
+          <Link href='/login' style={{ color: '#0070f3' }}>
             ログインはこちら
           </Link>
         </p>
