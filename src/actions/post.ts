@@ -67,6 +67,9 @@ export async function getPosts() {
 }
 
 export async function getPost(id: number) {
+  'use cache';
+  cacheTag(`post-${id}`);
+
   const postRepository = await getRepository(Post);
 
   const post = await postRepository.findOne({
