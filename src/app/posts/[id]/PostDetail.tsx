@@ -1,6 +1,8 @@
 import { getPost } from '@/actions/post';
 import DeletePostButton from './DeletePostButton';
 import { notFound } from 'next/navigation';
+import { verify } from 'crypto';
+import { verifySession } from '@/utils/session';
 
 export default async function PostDetail({
   params,
@@ -15,7 +17,8 @@ export default async function PostDetail({
     notFound();
   }
 
-  const isOwner = true; // 投稿者の場合 (削除ボタン表示)
+  const session = await verifySession();
+  const isOwner = session && session.userId && parseInt(session.userId) === post.user.id;
 
   return (
     <>
@@ -42,7 +45,7 @@ export default async function PostDetail({
 
       {isOwner && (
         <div style={{ marginTop: '20px' }}>
-          <DeletePostButton />
+          <DeletePostButton postId={post.id} />
         </div>
       )}
     </>
